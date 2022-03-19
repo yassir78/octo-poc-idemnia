@@ -1,6 +1,7 @@
 package ma.octo.poc.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ma.octo.poc.payload.response.CheckStatusResponse;
 import ma.octo.poc.payload.response.ConsentSendingResponse;
 import ma.octo.poc.payload.response.CreateIdentityResponse;
@@ -22,12 +23,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessingService {
-    private static Logger logger = Logger.getLogger(IdemniaDocumentsProcessingServiceImpl.class.getName());
     private final RestTemplate restTemplate;
     private final HttpUtils httpUtils;
-    private Map<String, String> processedDocuments = new HashMap<>();
-    private Map<String, String> processedProtrait = new HashMap<>();
+    private final Map<String, String> processedDocuments = new HashMap<>();
+    private final Map<String, String> processedProtrait = new HashMap<>();
 
     @Value("${URL_MAIN_PART}")
     private final String URL_MAIN_PART;
@@ -35,8 +36,8 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
     private String identityId;
 
 
-    public String process(List<String> documentsUrl, String portraitUrl, int confidenceId) {
-        logger.info("Processing documents");
+    public void process(List<String> documentsUrl, String portraitUrl, int confidenceId) {
+        log.info("Processing documents");
         createIdentity();
         sendConsent();
         // documents
@@ -50,12 +51,11 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
         // portrait
         Optional<CheckStatusResponse> checkStatusResponse = verifyPortrait(portraitUrl);
         checkStatusResponse.ifPresent(statusResponse -> processedProtrait.put(statusResponse.getId(), statusResponse.getStatus()));
-        return "THIS IS THE FINAL RESULT";
     }
 
     @Scheduled(fixedDelay = 600000)
     public void scheduleCheckingStatus() {
-        logger.info("Checking status");
+        log.info("Checking status");
         processedDocuments.forEach((key, value) -> {
             if (value.equals("PROCESSING")) {
                 Optional<String> checkStatusResponse = checkDocumentStatus(value);
@@ -74,7 +74,7 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
 
 
     private void createIdentity() {
-        logger.info("Creating identity");
+        log.info("Creating identity");
         CreateIdentityResponse result = restTemplate.postForObject(URL_MAIN_PART,
                 httpUtils.getHeaders(MediaType.MULTIPART_FORM_DATA, true),
                 CreateIdentityResponse.class);
@@ -82,15 +82,15 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
     }
 
     private void sendConsent() {
-        logger.info("Sending consent");
+        log.info("Sending consent");
         ConsentSendingResponse[] c = restTemplate.postForObject(URL_MAIN_PART + identityId + "/consents",
                 httpUtils.getHeaders(MediaType.APPLICATION_JSON, true),
                 ConsentSendingResponse[].class);
-        logger.info("Consent sent" + c[0].getConsentId());
+        log.info("Consent sent" + c[0].getConsentId());
     }
 
     private Optional<CheckStatusResponse> verifyDocument(String documentUrl) {
-        logger.info("Verifying documents");
+        log.info("Verifying documents");
         HttpHeaders headers = httpUtils.getHeaders(MediaType.MULTIPART_FORM_DATA, true);
         MultiValueMap<String, Object> body
                 = new LinkedMultiValueMap<>();
@@ -103,7 +103,7 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
     }
 
     private Optional<String> checkDocumentStatus(String documentId) {
-        logger.info("Checking documents status");
+        log.info("Checking documents status");
         CheckStatusResponse response = restTemplate.postForObject(URL_MAIN_PART + identityId + "/status/" + documentId,
                 httpUtils.getHeaders(MediaType.MULTIPART_FORM_DATA, true),
                 CheckStatusResponse.class);
@@ -113,7 +113,7 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
     }
 
     private Optional<CheckStatusResponse> verifyPortrait(String portraitUrl) {
-        logger.info("Verifying Portrait");
+        log.info("Verifying Portrait");
         HttpHeaders headers = httpUtils.getHeaders(MediaType.MULTIPART_FORM_DATA, true);
         MultiValueMap<String, Object> body
                 = new LinkedMultiValueMap<>();
@@ -125,7 +125,7 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
     }
 
     private Optional<String> checkPortraitStatus(String portraitId) {
-        logger.info("Checking Portrait status");
+        log.info("Checking Portrait status");
         HttpHeaders headers = httpUtils.getHeaders(MediaType.APPLICATION_JSON, true);
         CheckStatusResponse response = restTemplate.postForObject(URL_MAIN_PART + identityId + "/status/" + portraitId, headers, CheckStatusResponse.class);
         if (!Objects.isNull(response))
@@ -134,8 +134,8 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
     }
 
     private void retriveProof() {
-        logger.info("Retrieving proof");
-        logger.info("Proof retrieved");
+        log.info("Retrieving proof");
+        log.info("Proof retrieved");
     }
 
 
