@@ -1,4 +1,4 @@
-package ma.octo.poc.payload;
+package ma.octo.poc.payload.request;
 
 import lombok.Getter;
 import lombok.Setter;

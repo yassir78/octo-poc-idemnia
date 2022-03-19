@@ -1,7 +1,7 @@
 package ma.octo.poc.web;
 
 import lombok.RequiredArgsConstructor;
-import ma.octo.poc.payload.DocumentsVerificationRequest;
+import ma.octo.poc.payload.request.DocumentsVerificationRequest;
 import ma.octo.poc.service.DocumentVerificationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
