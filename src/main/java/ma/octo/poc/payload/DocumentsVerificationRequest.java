@@ -1,13 +1,15 @@
-package ma.octo.poc.dto;
+package ma.octo.poc.payload;
 
 import lombok.Getter;
 import lombok.Setter;
+import ma.octo.poc.dto.DocumentDto;
+import ma.octo.poc.dto.PortraitDto;
 
 import java.util.List;
 
 @Getter
 @Setter
-public class DocumentsVerificationRequestDto {
+public class DocumentsVerificationRequest {
 
     private List<DocumentDto> documents;
     private PortraitDto portrait;

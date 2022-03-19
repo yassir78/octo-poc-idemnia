@@ -1,7 +1,7 @@
 package ma.octo.poc.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
-import ma.octo.poc.dto.DocumentsVerificationRequestDto;
+import ma.octo.poc.payload.DocumentsVerificationRequest;
 import ma.octo.poc.service.DocumentVerificationService;
 import ma.octo.poc.service.UploadService;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
     private final UploadService uploadService;
 
     @Override
-    public String verify(DocumentsVerificationRequestDto documentsVerificationRequestDto) {
+    public String verify(DocumentsVerificationRequest documentsVerificationRequest) {
 
         // TODO: implement
         return null;

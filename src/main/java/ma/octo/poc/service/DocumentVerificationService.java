@@ -1,8 +1,8 @@
 package ma.octo.poc.service;
 
-import ma.octo.poc.dto.DocumentsVerificationRequestDto;
+import ma.octo.poc.payload.DocumentsVerificationRequest;
 
 public interface DocumentVerificationService {
 
-    String verify(DocumentsVerificationRequestDto documentsVerificationRequestDto);
+    String verify(DocumentsVerificationRequest documentsVerificationRequest);
 }
