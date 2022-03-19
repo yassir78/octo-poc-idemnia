@@ -13,8 +13,11 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
 
     @Override
     public String verify(DocumentsVerificationRequestDto documentsVerificationRequestDto) {
+        // upload documents
 
-        // TODO: implement
+        // save the documents in the database
+
+        // publish the event to the queue to start the verification process
         return null;
     }
 }
