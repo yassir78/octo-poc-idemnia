@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DocumentDto {
-    private String encodedDocumentImage;
+    private String encodedDocumentFrontImage;
+    private String encodedDocumentBackImage;
 }

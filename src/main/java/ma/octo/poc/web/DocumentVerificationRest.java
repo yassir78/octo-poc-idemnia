@@ -2,6 +2,7 @@ package ma.octo.poc.web;
 
 import lombok.RequiredArgsConstructor;
 import ma.octo.poc.payload.request.DocumentsVerificationRequest;
+import ma.octo.poc.response.Result;
 import ma.octo.poc.service.DocumentVerificationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ public class DocumentVerificationRest {
     private final DocumentVerificationService documentVerificationService;
 
     @PostMapping("/verify")
-    public String verify(DocumentsVerificationRequest documentsVerificationRequest) {
-        return "document-verification";
+    public Result<Void> verify(DocumentsVerificationRequest documentsVerificationRequest) {
+        return documentVerificationService.verify(documentsVerificationRequest);
     }
 }

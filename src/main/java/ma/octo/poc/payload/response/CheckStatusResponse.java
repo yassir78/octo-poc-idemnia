@@ -1,10 +1,10 @@
 package ma.octo.poc.payload.response;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class CheckStatusResponse {
     private String status;
     private String type;

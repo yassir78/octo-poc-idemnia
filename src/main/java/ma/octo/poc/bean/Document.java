@@ -19,7 +19,8 @@ public class Document extends AbstractId {
 
     private String type;
     private LocalDateTime submitDateTime;
-    private String url;
+    private String frontUrl;
+    private String backUrl;
     private String status;
     private String strength;
     private String score;
