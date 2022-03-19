@@ -4,5 +4,5 @@ import ma.octo.poc.dto.DocumentsVerificationRequestDto;
 
 public interface DocumentVerificationService {
 
-    public String verify(DocumentsVerificationRequestDto documentsVerificationRequestDto);
+    String verify(DocumentsVerificationRequestDto documentsVerificationRequestDto);
 }

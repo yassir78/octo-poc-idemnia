@@ -15,4 +15,5 @@ import javax.persistence.Entity;
 public class Portrait extends AbstractId {
 
     private String status;
+    private String url;
 }
