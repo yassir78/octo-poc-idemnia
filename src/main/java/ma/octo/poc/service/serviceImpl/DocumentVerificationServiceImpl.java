@@ -39,7 +39,7 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
         if (documentsVerificationRequest.getPortrait().getEncodedPortraitImage() == null) {
             result.addErrorMessage("The portrait is not correct");
         }
-        if (documentsVerificationRequest.getDocuments().stream().anyMatch(document -> document.getEncodedDocumentFrontImage() == null)) {
+        if (documentsVerificationRequest.getDocuments().stream().anyMatch(document -> document.getEncodedDocumentFrontImage() == null || document.getEncodedDocumentBackImage() == null)) {
             result.addErrorMessage("The document front image is not correct");
         }
     }
