@@ -14,16 +14,5 @@ public class PocApplication {
         SpringApplication.run(PocApplication.class, args);
     }
 
-    @Bean
-    RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 
-    @Bean
-    public Cloudinary cloudinary() {
-        return new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "drft25mc7",
-                "api_key", "946158346667762",
-                "api_secret", "hpo7mU6Qk6eFoe4KDVUahU5tHsc"));
-    }
 }

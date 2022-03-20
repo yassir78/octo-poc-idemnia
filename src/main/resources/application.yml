@@ -1,7 +1,12 @@
-
 keycloak:
   realm: serr
   auth-server-url: http://localhost:8180/auth
   resource: octo-poc-idemia
   public-client: false
   bearer-only: true
+
+# kafka
+
+kafka:
+  bootstrap-servers: localhost:9092
+  documents-verification-topic: documents-verification-topic

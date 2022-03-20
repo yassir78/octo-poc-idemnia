@@ -5,15 +5,19 @@ import ma.octo.poc.bean.Document;
 import ma.octo.poc.bean.Portrait;
 import ma.octo.poc.dto.DocumentDto;
 import ma.octo.poc.dto.PortraitDto;
+import ma.octo.poc.kafka.SendMessage;
 import ma.octo.poc.payload.request.DocumentsVerificationRequest;
 import ma.octo.poc.response.Result;
 import ma.octo.poc.service.DocumentVerificationService;
 import ma.octo.poc.service.IdentityService;
 import ma.octo.poc.service.UploadService;
 import ma.octo.poc.utils.FileConverter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +25,11 @@ import java.util.stream.Collectors;
 public class DocumentVerificationServiceImpl implements DocumentVerificationService {
     private final UploadService uploadService;
     private final IdentityService identityService;
+    private final SendMessage sendMessage;
+    @Value(value = "${kafka.verify-documents-topic}")
+    private String startDocumentsVerificationTopic;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
 
     @Override
     public Result<Void> verify(DocumentsVerificationRequest documentsVerificationRequest) {
@@ -45,11 +54,13 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
     }
 
     private void run(Result<Void> result, DocumentsVerificationRequest documentsVerificationRequest) {
-        documentsVerificationRequest.getDocuments().stream().map(this::saveDocuments).collect(Collectors.toList());
-        savePortrait(documentsVerificationRequest.getPortrait());
-
-
+        List<Document> documents = documentsVerificationRequest.getDocuments().stream().map(this::saveDocuments).collect(Collectors.toList());
+        Portrait portrait = savePortrait(documentsVerificationRequest.getPortrait());
+        identityService.save(documents, portrait);
         // publish the event to the queue to start the verification process
+        //this.kafkaTemplate.send(startDocumentsVerificationTopic, sendMessage.buildMessage());
+
+
     }
 
     private Portrait savePortrait(PortraitDto portrait) {
@@ -57,7 +68,6 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
         Portrait portraitEntity = new Portrait();
         portraitEntity.setUrl(portraitFileName);
         return portraitEntity;
-
     }
 
     private Document saveDocuments(DocumentDto documentDto) {
