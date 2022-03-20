@@ -18,7 +18,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +54,9 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
 
     @Scheduled(fixedDelay = 600000)
     public void scheduleCheckingStatus() {
-        log.info("Checking status");
+        if (identityId.isEmpty()) {
+            return;
+        }
         processedDocuments.forEach((key, value) -> {
             if (value.equals("PROCESSING")) {
                 Optional<String> checkStatusResponse = checkDocumentStatus(value);
@@ -69,6 +70,7 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
             }
         });
         // TODO: check if all documents are processed And if so, retrieve proof And send event to the client
+
 
     }
 

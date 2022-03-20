@@ -32,7 +32,7 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
 
 
     @Override
-    public Result<Void> verify(DocumentsVerificationRequest documentsVerificationRequest) {
+    public Result<Void> verify(DocumentsVerificationRequest documentsVerificationRequest) throws IOException {
         Result<Void> result = new Result();
         validate(result, documentsVerificationRequest);
         if (!result.hasErrors()) {
@@ -53,7 +53,7 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
         }
     }
 
-    private void run(Result<Void> result, DocumentsVerificationRequest documentsVerificationRequest) {
+    private void run(Result<Void> result, DocumentsVerificationRequest documentsVerificationRequest) throws IOException {
         List<Document> documents = documentsVerificationRequest.getDocuments().stream().map(this::saveDocuments).collect(Collectors.toList());
         Portrait portrait = savePortrait(documentsVerificationRequest.getPortrait());
         identityService.save(documents, portrait);
@@ -63,7 +63,7 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
 
     }
 
-    private Portrait savePortrait(PortraitDto portrait) {
+    private Portrait savePortrait(PortraitDto portrait) throws IOException {
         String portraitFileName = uploadService.upload(FileConverter.decode(portrait.getEncodedPortraitImage()));
         Portrait portraitEntity = new Portrait();
         portraitEntity.setUrl(portraitFileName);
@@ -71,16 +71,16 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
     }
 
     private Document saveDocuments(DocumentDto documentDto) {
+        Document documentEntity = new Document();
         try {
             String frontFileName = uploadService.upload(FileConverter.decode(documentDto.getEncodedDocumentFrontImage()));
             String backFileName = uploadService.upload(FileConverter.decode(documentDto.getEncodedDocumentBackImage()));
-            Document documentEntity = new Document();
             documentEntity.setBackUrl(backFileName);
             documentEntity.setFrontUrl(frontFileName);
-            return documentEntity;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return documentEntity;
 
     }
 }
