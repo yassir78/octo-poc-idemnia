@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -15,8 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Identity extends AbstractId {
+public class Identity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     String levelOfAssurance;
     String status;
     @OneToMany(mappedBy = "identity")
