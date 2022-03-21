@@ -15,7 +15,7 @@ public class KafkaTopicConfig {
 
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
-    @Value(value = "${kafka.verify-documents-topic}")
+    @Value(value = "${kafka.documents-verification-topic}")
     private String startDocumentsVerificationTopic;
 
     @Bean
