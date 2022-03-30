@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessingService {
     private final RestTemplate restTemplate;
     private final HttpUtils httpUtils;
-    private final Map<String, String> processedDocuments = new HashMap<>();
-    private final Map<String, String> processedProtrait = new HashMap<>();
+    private Map<String, String> processedDocuments = new HashMap<>();
+    private Map<String, String> processedProtrait = new HashMap<>();
 
     @Value("${URL_MAIN_PART}")
     private String URL_MAIN_PART;

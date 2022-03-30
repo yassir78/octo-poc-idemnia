@@ -26,9 +26,9 @@ public class DocumentVerificationServiceImpl implements DocumentVerificationServ
     private final UploadService uploadService;
     private final IdentityService identityService;
     private final SendMessage sendMessage;
-    @Value(value = "${kafka.verify-documents-topic}")
+    @Value(value = "${kafka.documents-verification-topic}")
     private String startDocumentsVerificationTopic;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
 
     @Override
