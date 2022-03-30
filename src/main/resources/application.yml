@@ -8,5 +8,5 @@ keycloak:
 # kafka
 
 kafka:
-  bootstrap-servers: localhost:9092
+  bootstrapAddress: localhost:9092
   documents-verification-topic: documents-verification-topic

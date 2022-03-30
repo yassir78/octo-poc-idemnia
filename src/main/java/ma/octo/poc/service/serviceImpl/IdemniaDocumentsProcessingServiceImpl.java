@@ -30,7 +30,7 @@ public class IdemniaDocumentsProcessingServiceImpl implements DocumentsProcessin
     private final Map<String, String> processedProtrait = new HashMap<>();
 
     @Value("${URL_MAIN_PART}")
-    private final String URL_MAIN_PART;
+    private String URL_MAIN_PART;
 
     private String identityId;
 
